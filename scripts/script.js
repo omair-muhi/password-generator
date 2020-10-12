@@ -1,30 +1,54 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
-// A 2D array containing all possible characters to choose from
-var passwordChars = [
-  // lowerCaseChars
+var lowerCaseChars =
   ['a','b','c','d','e','f','g','h','i','j','k','l','m',
-  'n','o','p','q','r','s','t','u','v','w','x','y','z'],
-  // upperCaseChars
-  ['A','B','C','D','E','F','G','H','I','J','K','L','M',
-  'N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
-  // numberChars
-  ['0','1','2','3','4','5','6','7','8','9'],
-  // specialChars (33 chars based on OWASP) 
-  [" ","!","\"","#","$","%","&","'","(",")","*",
-  "+",",","-",".","/",":",";","<","=",">","?",
-  "@","[","\\","]","^","_","`","{","|","}","~"]
-]
+  'n','o','p','q','r','s','t','u','v','w','x','y','z'];
+var upperCaseChars = 
+['A','B','C','D','E','F','G','H','I','J','K','L','M',
+'N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+var numberChars = 
+['0','1','2','3','4','5','6','7','8','9'];
+var specialChars = 
+[" ","!","\"","#","$","%","&","'","(",")","*",
+"+",",","-",".","/",":",";","<","=",">","?",
+"@","[","\\","]","^","_","`","{","|","}","~"];
 
 function generatePassword(passwordCriteria) {
   var password = ""; // empty string - will be built in steps
+  // build the global pool of characters to choose from based
+  // on the passwordCriteria selected by the user
+  var passwordChars = [];
+  // Build global pool of pools of password characters
+  if(passwordCriteria.lower === true) {
+    // add lower-case chars if user wants
+    // to include it in their password 
+    passwordChars.push(lowerCaseChars);
+  }
+  if(passwordCriteria.upper === true) {
+    // add upper-case chars if user wants
+    // to include it in their password 
+    passwordChars.push(upperCaseChars);
+  }
+  if(passwordCriteria.numeric === true) {
+    // add numeric chars if user wants
+    // to include it in their password 
+    passwordChars.push(numberChars);
+  }
+  if(passwordCriteria.special === true) {
+    // add special chars if user wants
+    // to include it in their password 
+    passwordChars.push(specialChars);
+  }
   // declare a for-loop to fill characters matching requested length
   for (var char=0; char<passwordCriteria.length; char++) {
-    // Step 1: Choose 1/4 pools by generating a random # between 0-3
-    var globaPoolIndex = Math.floor(Math.random()*passwordChars.length);
-    // Step 2: Choose a random character from the chosen pool
+    // For each character position in password string:
+    // Step 1: Choose from upto 4 pools by generating a random # between 0-3(max)
+    var globalPoolIndex = Math.floor(Math.random()*passwordChars.length);
+    // Step 2: Choose a random index from the chosen pool
     var charPoolIndex = Math.floor(Math.random()*passwordChars[globalPoolIndex].length);
-    // Step 3: Concatenate chosen character to password string
+    // Step 3: Index into 2D array and extract a password char 
+    // Step 3.1: Concatenate chosen character to password string
+    console.log("char="+char+": globalPoolIndex="+globalPoolIndex+" charPoolIndex="+charPoolIndex);
     password += passwordChars[globalPoolIndex][charPoolIndex];
   }
   return password;
@@ -44,7 +68,7 @@ function writePassword() {
   passwordCriteria.numeric = confirm("Include numeric characters?"); // numbers
   passwordCriteria.special = confirm("Include special characters?"); // special characters
   console.log(passwordCriteria);
-  var password = generatePassword();
+  var password = generatePassword(passwordCriteria);
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
