@@ -63,7 +63,7 @@ function generatePassword(passwordCriteria) {
     var charPoolIndex = Math.floor(Math.random()*passwordChars[globalPoolIndex].length);
     // Step 3: Index into 2D array and extract a password char 
     // Step 3.1: Concatenate chosen character to password string
-    console.log("char="+char+": globalPoolIndex="+globalPoolIndex+" charPoolIndex="+charPoolIndex);
+    // console.log("char="+char+": globalPoolIndex="+globalPoolIndex+" charPoolIndex="+charPoolIndex); // enable for debugging
     password += passwordChars[globalPoolIndex][charPoolIndex];
   }
   return password; // password is ready!
@@ -83,7 +83,6 @@ function writePassword() {
   passwordCriteria.upper = confirm("Include upper-case characters?"); // upper-case
   passwordCriteria.numeric = confirm("Include numeric characters?"); // numbers
   passwordCriteria.special = confirm("Include special characters?"); // special characters
-  console.log(passwordCriteria);
   // 3. Generate password
   var password = generatePassword(passwordCriteria);
   // 4. Display password
